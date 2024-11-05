@@ -17,7 +17,8 @@ public class User {
     private String username;
     private String passwordHash;
     private String phone;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
     private Date created_at;
     private Date updated_at;
 }

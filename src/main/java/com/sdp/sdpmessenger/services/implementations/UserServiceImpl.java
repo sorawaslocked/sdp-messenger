@@ -1,18 +1,17 @@
 package com.sdp.sdpmessenger.services.implementations;
 
 import com.sdp.sdpmessenger.models.User;
-import com.sdp.sdpmessenger.repositories.UserRepositoryInterface;
+import com.sdp.sdpmessenger.repositories.UserRepository;
 import com.sdp.sdpmessenger.services.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepositoryInterface userRepo;
+    private final UserRepository userRepo;
 
-    public UserServiceImpl(UserRepositoryInterface userRepo) {
+    public UserServiceImpl(UserRepository userRepo) {
         this.userRepo = userRepo;
     }
 
