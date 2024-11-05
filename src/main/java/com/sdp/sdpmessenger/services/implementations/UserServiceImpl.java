@@ -2,17 +2,17 @@ package com.sdp.sdpmessenger.services.implementations;
 
 import com.sdp.sdpmessenger.models.User;
 import com.sdp.sdpmessenger.repositories.UserRepositoryInterface;
-import com.sdp.sdpmessenger.services.interfaces.UserServiceInterface;
+import com.sdp.sdpmessenger.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService implements UserServiceInterface {
+public class UserServiceImpl implements UserService {
     private final UserRepositoryInterface userRepo;
 
-    public UserService(UserRepositoryInterface userRepo) {
+    public UserServiceImpl(UserRepositoryInterface userRepo) {
         this.userRepo = userRepo;
     }
 
@@ -35,18 +35,19 @@ public class UserService implements UserServiceInterface {
     public User update(User user) {
         if (userRepo.existsById(user.getId())) {
             return userRepo.save(user);
-        } else {
-            throw new EntityNotFoundException("User not found");
         }
+
+        return null;
     }
 
     @Override
     public boolean deleteById(int id) {
         if (userRepo.existsById(id)) {
             userRepo.deleteById(id);
-            return true; // Indicate successful deletion
-        } else {
-            return false; // Indicate user was not found
+
+            return true;
         }
+
+        return false;
     }
 }

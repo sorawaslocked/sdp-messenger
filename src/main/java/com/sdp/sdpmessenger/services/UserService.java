@@ -1,10 +1,10 @@
-package com.sdp.sdpmessenger.services.interfaces;
+package com.sdp.sdpmessenger.services;
 
 import com.sdp.sdpmessenger.models.User;
 
 import java.util.List;
 
-public interface UserServiceInterface {
+public interface UserService {
     List<User> getAll();
     User getById(int id);
 
