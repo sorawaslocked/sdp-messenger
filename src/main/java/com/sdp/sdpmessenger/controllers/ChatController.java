@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/chats")
@@ -85,6 +82,7 @@ public class ChatController {
 
         chat.addAll(messageService.getFromTo(senderId, receiverId));
         chat.addAll(messageService.getFromTo(receiverId, senderId));
+        chat.sort(Comparator.comparing(Message::getCreatedAt).reversed());
 
         return new ResponseEntity<>(chat, HttpStatus.OK);
     }
