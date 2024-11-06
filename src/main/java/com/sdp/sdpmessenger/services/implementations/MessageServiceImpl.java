@@ -33,6 +33,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message create(Message message) {
+        message.setId(0);
+
         return messageRepo.save(message);
     }
 
