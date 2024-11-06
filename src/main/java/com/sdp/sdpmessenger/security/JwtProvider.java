@@ -62,7 +62,6 @@ public class JwtProvider {
 
             byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
             SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
-            System.out.println(secret);
 
             return new JwtProvider(secretKey, expirationPeriod, signatureAlgorithm);
         }

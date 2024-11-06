@@ -1,6 +1,7 @@
 package com.sdp.sdpmessenger.controllers;
 
 import com.sdp.sdpmessenger.authentication.LoginRequest;
+import com.sdp.sdpmessenger.authentication.validators.AuthValidator;
 import com.sdp.sdpmessenger.security.JwtProvider;
 import com.sdp.sdpmessenger.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
+    private final AuthValidator authValidator;
 
     @Autowired
-    public AuthController(UserService userService, JwtProvider jwtProvider) {
+    public AuthController(UserService userService, JwtProvider jwtProvider, AuthValidator authValidator) {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
+        this.authValidator = authValidator;
+    }
+
+    @GetMapping("/token")
+    public ResponseEntity<String> getToken(@RequestBody String token) {
+        HttpStatus status = authValidator.validate(token);
+
+        return new ResponseEntity<>(token, status);
     }
 
     @GetMapping("/login")
