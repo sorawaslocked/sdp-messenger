@@ -1,10 +1,16 @@
 package com.sdp.sdpmessenger.authentication.validators.register;
 
 import com.sdp.sdpmessenger.authentication.RegisterRequest;
+import com.sdp.sdpmessenger.services.UserService;
 import org.springframework.http.HttpStatus;
 import java.util.regex.Pattern;
 
 public class PasswordRegisterValidator extends RegisterValidator {
+    private UserService userService;
+
+    public PasswordRegisterValidator(UserService userService) {
+        this.userService = userService;
+    }
 
     private static final String PASSWORD_PATTERN =
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";

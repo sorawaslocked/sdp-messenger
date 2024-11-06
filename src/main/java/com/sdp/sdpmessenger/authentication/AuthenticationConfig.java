@@ -7,6 +7,7 @@ import com.sdp.sdpmessenger.authentication.validators.auth.UserExistsAuthValidat
 import com.sdp.sdpmessenger.authentication.validators.login.LoginValidator;
 import com.sdp.sdpmessenger.authentication.validators.login.PasswordLoginValidator;
 import com.sdp.sdpmessenger.authentication.validators.login.UserNotExistsLoginValidator;
+import com.sdp.sdpmessenger.authentication.validators.register.PasswordRegisterValidator;
 import com.sdp.sdpmessenger.authentication.validators.register.PhoneExistsRegisterValidator;
 import com.sdp.sdpmessenger.authentication.validators.register.RegisterValidator;
 import com.sdp.sdpmessenger.authentication.validators.register.UsernameExistsRegisterValidator;
@@ -40,7 +41,8 @@ public class AuthenticationConfig {
     public RegisterValidator registerValidator() {
         return RegisterValidator.link(
                 new UsernameExistsRegisterValidator(userService),
-                new PhoneExistsRegisterValidator(userService)
+                new PhoneExistsRegisterValidator(userService),
+                new PasswordRegisterValidator(userService)
         );
     }
 
