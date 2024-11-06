@@ -8,6 +8,7 @@ public interface UserService {
     List<User> getAll();
     User getById(int id);
     User getUserByUsername(String username);
+    User getUserByPhone(String phone);
 
     User create(User user);
     User update(User user);

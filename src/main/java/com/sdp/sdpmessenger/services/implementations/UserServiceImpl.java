@@ -31,6 +31,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByPhone(String phone) {
+        return userRepo.getUserByPhone(phone).orElse(null);
+    }
+
+    @Override
     public User create(User user) {
         return userRepo.save(user);
     }
