@@ -1,20 +1,20 @@
 package com.sdp.sdpmessenger.authentication;
 
-import com.sdp.sdpmessenger.authentication.validators.AuthValidator;
-import com.sdp.sdpmessenger.authentication.validators.HeaderAuthValidator;
-import com.sdp.sdpmessenger.authentication.validators.TokenAuthValidator;
-import com.sdp.sdpmessenger.authentication.validators.UserExistsAuthValidator;
+import com.sdp.sdpmessenger.authentication.validators.auth.AuthValidator;
+import com.sdp.sdpmessenger.authentication.validators.auth.HeaderAuthValidator;
+import com.sdp.sdpmessenger.authentication.validators.auth.TokenAuthValidator;
+import com.sdp.sdpmessenger.authentication.validators.auth.UserExistsAuthValidator;
 import com.sdp.sdpmessenger.security.JwtProvider;
 import com.sdp.sdpmessenger.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AuthConfig {
+public class AuthenticationConfig {
     private JwtProvider jwtProvider;
     private UserService userService;
 
-    public AuthConfig(JwtProvider jwtProvider, UserService userService) {
+    public AuthenticationConfig(JwtProvider jwtProvider, UserService userService) {
         this.jwtProvider = jwtProvider;
         this.userService = userService;
     }

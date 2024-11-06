@@ -1,4 +1,4 @@
-package com.sdp.sdpmessenger.authentication.validators;
+package com.sdp.sdpmessenger.authentication.validators.auth;
 
 import com.sdp.sdpmessenger.security.JwtProvider;
 import org.springframework.http.HttpStatus;
