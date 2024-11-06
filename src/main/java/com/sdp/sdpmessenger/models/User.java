@@ -9,16 +9,29 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password_hash")
     private String passwordHash;
+
+    @Column(name = "phone")
     private String phone;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private UserStatus status;
-    private Date created_at;
-    private Date updated_at;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updatedAt;
 }
