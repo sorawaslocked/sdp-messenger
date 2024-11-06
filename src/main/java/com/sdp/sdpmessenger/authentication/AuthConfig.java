@@ -1,6 +1,7 @@
 package com.sdp.sdpmessenger.authentication;
 
 import com.sdp.sdpmessenger.authentication.validators.AuthValidator;
+import com.sdp.sdpmessenger.authentication.validators.HeaderAuthValidator;
 import com.sdp.sdpmessenger.authentication.validators.TokenAuthValidator;
 import com.sdp.sdpmessenger.authentication.validators.UserExistsAuthValidator;
 import com.sdp.sdpmessenger.security.JwtProvider;
@@ -21,6 +22,7 @@ public class AuthConfig {
     @Bean
     public AuthValidator authValidator() {
         return AuthValidator.link(
+                new HeaderAuthValidator(),
                 new TokenAuthValidator(jwtProvider),
                 new UserExistsAuthValidator(userService, jwtProvider)
         );

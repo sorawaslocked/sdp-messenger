@@ -4,6 +4,7 @@ import com.sdp.sdpmessenger.authentication.LoginRequest;
 import com.sdp.sdpmessenger.authentication.validators.AuthValidator;
 import com.sdp.sdpmessenger.security.JwtProvider;
 import com.sdp.sdpmessenger.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +28,10 @@ public class AuthController {
     }
 
     @GetMapping("/token")
-    public ResponseEntity<String> getToken(@RequestBody String token) {
-        HttpStatus status = authValidator.validate(token);
+    public ResponseEntity<String> getToken(HttpServletRequest request) {
+        HttpStatus status = authValidator.validate(request.getHeader("Authorization"));
 
-        return new ResponseEntity<>(token, status);
+        return new ResponseEntity<>("token", status);
     }
 
     @GetMapping("/login")
