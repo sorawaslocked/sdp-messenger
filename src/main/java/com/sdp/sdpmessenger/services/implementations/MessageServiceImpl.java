@@ -32,6 +32,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public List<Message> getAllInvolvingUser(int userId) {
+        return messageRepo.findAllMessagesInvolvingUser(userId);
+    }
+
+    @Override
     public Message create(Message message) {
         message.setId(0);
 
