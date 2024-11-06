@@ -1,27 +1,34 @@
 package com.sdp.sdpmessenger.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "messages")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "sender_id")
-    private int senderId;
+    @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false)
+    @JsonIgnore
+    private User sender;
 
-    @Column(name = "receiver_id")
-    private int receiverId;
+    @ManyToOne
+    @JoinColumn(name = "receiver_id", nullable = false)
+    @JsonIgnore
+    private User receiver;
 
     @Column(name = "text_value")
     private String textValue;
@@ -35,4 +42,7 @@ public class Message {
 
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL)
+    private List<Attachment> attachments;
 }
