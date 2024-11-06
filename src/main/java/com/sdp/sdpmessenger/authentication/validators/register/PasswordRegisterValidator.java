@@ -1,7 +1,6 @@
 package com.sdp.sdpmessenger.authentication.validators.register;
 
 import com.sdp.sdpmessenger.authentication.RegisterRequest;
-import com.sdp.sdpmessenger.services.UserService;
 import org.springframework.http.HttpStatus;
 import java.util.regex.Pattern;
 
