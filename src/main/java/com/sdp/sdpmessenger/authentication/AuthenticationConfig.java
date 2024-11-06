@@ -18,9 +18,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class AuthenticationConfig {
-    private JwtProvider jwtProvider;
-    private UserService userService;
-    private static BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final JwtProvider jwtProvider;
+    private final UserService userService;
+    private final static BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public AuthenticationConfig(JwtProvider jwtProvider, UserService userService) {
         this.jwtProvider = jwtProvider;
