@@ -4,7 +4,7 @@ import java.security.SecureRandom;
 
 public class RandomStringGenerator {
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:,.<>?/~";
-    private static final int LENGTH = 16;
+    private static final int LENGTH = 32;
     private static final SecureRandom RANDOM = new SecureRandom();
 
     public String generateRandomString() {

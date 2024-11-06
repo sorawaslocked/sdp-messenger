@@ -10,11 +10,11 @@ public class SecurityConfig {
     @Bean
     public JwtProvider jwtProvider(
             @Value("${secretKey:#{null}}") String secretKey,
-            @Value("${expirationPeriod}") long expirationPeriod) {
+            @Value("${expirationPeriod:0}") long expirationPeriod) {
         return new JwtProvider.JwtProviderBuilder()
                 .setSecret(secretKey)
                 .setExpirationPeriod(expirationPeriod)
-                .setSignatureAlgorithm(Jwts.SIG.HS512)
+                .setSignatureAlgorithm(Jwts.SIG.HS256)
                 .build();
     }
 }

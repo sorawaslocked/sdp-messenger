@@ -53,7 +53,7 @@ public class JwtProvider {
             }
 
             if (expirationPeriod <= 0) {
-                expirationPeriod = 60;
+                expirationPeriod = 1500000;
             }
 
             if (signatureAlgorithm == null) {
@@ -62,17 +62,18 @@ public class JwtProvider {
 
             byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
             SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
+            System.out.println(secret);
 
             return new JwtProvider(secretKey, expirationPeriod, signatureAlgorithm);
         }
     }
 
-    public String generateToken(Integer userId) {
+    public String generateToken(int userId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationPeriod);
 
         return Jwts.builder()
-                .subject(userId.toString())
+                .claim("userId", userId)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey, signatureAlgorithm)
@@ -92,12 +93,12 @@ public class JwtProvider {
         }
     }
 
-    public int getUserIdFromToken(String token) {
-        return Integer.parseInt(Jwts.parser()
+    public Integer getUserIdFromToken(String token) {
+        return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .getSubject());
+                .get("userId", Integer.class);
     }
 }
