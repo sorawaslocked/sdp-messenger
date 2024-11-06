@@ -6,11 +6,6 @@ import org.springframework.http.HttpStatus;
 import java.util.regex.Pattern;
 
 public class PasswordRegisterValidator extends RegisterValidator {
-    private UserService userService;
-
-    public PasswordRegisterValidator(UserService userService) {
-        this.userService = userService;
-    }
 
     private static final String PASSWORD_PATTERN =
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
@@ -21,14 +16,12 @@ public class PasswordRegisterValidator extends RegisterValidator {
         String password = request.getPassword();
 
         if (!isPasswordValid(password)) {
-            return HttpStatus.BAD_REQUEST;  // Invalid password format
+            return HttpStatus.BAD_REQUEST;
         }
 
-        // If valid, proceed to the next validator in the chain
         return validateNext(request);
     }
 
-    // Method that validates the password based on defined rules
     private boolean isPasswordValid(String password) {
         if (password == null) {
             return false;

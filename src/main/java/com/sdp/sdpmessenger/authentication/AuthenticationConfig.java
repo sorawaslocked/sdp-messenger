@@ -42,7 +42,7 @@ public class AuthenticationConfig {
         return RegisterValidator.link(
                 new UsernameExistsRegisterValidator(userService),
                 new PhoneExistsRegisterValidator(userService),
-                new PasswordRegisterValidator(userService)
+                new PasswordRegisterValidator()
         );
     }
 
