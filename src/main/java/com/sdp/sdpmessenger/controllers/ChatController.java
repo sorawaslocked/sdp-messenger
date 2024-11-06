@@ -1,6 +1,7 @@
 package com.sdp.sdpmessenger.controllers;
 
 import com.sdp.sdpmessenger.authentication.validators.auth.AuthValidator;
+import com.sdp.sdpmessenger.models.Chat;
 import com.sdp.sdpmessenger.models.ChatSimple;
 import com.sdp.sdpmessenger.models.Message;
 import com.sdp.sdpmessenger.models.User;
@@ -67,7 +68,7 @@ public class ChatController {
     }
 
     @GetMapping("/{receiverId}")
-    public ResponseEntity<List<Message>> getChat(@PathVariable int receiverId, HttpServletRequest request) {
+    public ResponseEntity<Chat> getChat(@PathVariable int receiverId, HttpServletRequest request) {
         HttpStatus status = authValidator.validate(request.getHeader("Authorization"));
 
         if (status != HttpStatus.OK) {
@@ -78,11 +79,19 @@ public class ChatController {
 
         int senderId = jwtProvider.getUserIdFromToken(token);
 
-        List<Message> chat = new ArrayList<>();
+        List<Message> chatMessages = new ArrayList<>();
 
-        chat.addAll(messageService.getFromTo(senderId, receiverId));
-        chat.addAll(messageService.getFromTo(receiverId, senderId));
-        chat.sort(Comparator.comparing(Message::getCreatedAt).reversed());
+        chatMessages.addAll(messageService.getFromTo(senderId, receiverId));
+        chatMessages.addAll(messageService.getFromTo(receiverId, senderId));
+        chatMessages.sort(Comparator.comparing(Message::getCreatedAt).reversed());
+
+        User receiver = userService.getById(receiverId);
+
+        if (receiver == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Chat chat = new Chat(receiverId, receiver.getUsername(), chatMessages);
 
         return new ResponseEntity<>(chat, HttpStatus.OK);
     }
