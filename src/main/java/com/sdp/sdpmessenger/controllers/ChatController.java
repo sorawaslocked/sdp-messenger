@@ -36,17 +36,15 @@ public class ChatController {
 
     @GetMapping("/simple")
     public ResponseEntity<List<ChatSimple>> simpleChats(HttpServletRequest request) {
-        HttpStatus status = authValidator.validate(request.getHeader("Authorization"));
+        var validationResult = validateTokenAndGetUserId(request);
 
-        if (status != HttpStatus.OK) {
-            return new ResponseEntity<>(status);
+        if (!validationResult.hasBody()) {
+            return new ResponseEntity<>(validationResult.getStatusCode());
         }
 
-        String token = request.getHeader("Authorization").substring(7);
+        int senderId = validationResult.getBody();
 
-        int userId = jwtProvider.getUserIdFromToken(token);
-
-        List<Message> messagesInvolvingUser = messageService.getAllInvolvingUser(userId);
+        List<Message> messagesInvolvingUser = messageService.getAllInvolvingUser(senderId);
 
         Set<ChatSimple> simple = new HashSet<>();
 
@@ -54,7 +52,7 @@ public class ChatController {
             int receiverId = msg.getReceiver().getId();
             String receiverUsername = msg.getReceiver().getUsername();
 
-            if (receiverId == userId) {
+            if (receiverId == senderId) {
                 receiverId = msg.getSender().getId();
                 receiverUsername = msg.getSender().getUsername();
             }
@@ -67,15 +65,13 @@ public class ChatController {
 
     @GetMapping("/{receiverId}")
     public ResponseEntity<Chat> getChatWith(@PathVariable int receiverId, HttpServletRequest request) {
-        HttpStatus status = authValidator.validate(request.getHeader("Authorization"));
+        var validationResult = validateTokenAndGetUserId(request);
 
-        if (status != HttpStatus.OK) {
-            return new ResponseEntity<>(status);
+        if (!validationResult.hasBody()) {
+            return new ResponseEntity<>(validationResult.getStatusCode());
         }
 
-        String token = request.getHeader("Authorization").substring(7);
-
-        int senderId = jwtProvider.getUserIdFromToken(token);
+        int senderId = validationResult.getBody();
 
         List<Message> chatMessages = new ArrayList<>();
 
@@ -98,15 +94,13 @@ public class ChatController {
     public ResponseEntity<Message> postMessage(@PathVariable int receiverId,
                                              @RequestBody PostMessageDto message,
                                              HttpServletRequest request) {
-        HttpStatus status = authValidator.validate(request.getHeader("Authorization"));
+        var validationResult = validateTokenAndGetUserId(request);
 
-        if (status != HttpStatus.OK) {
-            return new ResponseEntity<>(status);
+        if (!validationResult.hasBody()) {
+            return new ResponseEntity<>(validationResult.getStatusCode());
         }
 
-        String token = request.getHeader("Authorization").substring(7);
-
-        int senderId = jwtProvider.getUserIdFromToken(token);
+        int senderId = validationResult.getBody();
 
         Message createdMessage = messageService.create(message, senderId, receiverId);
 
@@ -115,5 +109,18 @@ public class ChatController {
         }
 
         return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
+    }
+
+    private ResponseEntity<Integer> validateTokenAndGetUserId(HttpServletRequest request) {
+        HttpStatus status = authValidator.validate(request.getHeader("Authorization"));
+        if (status != HttpStatus.OK) {
+            return new ResponseEntity<>(status);
+        }
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        int userId = jwtProvider.getUserIdFromToken(token);
+
+        return new ResponseEntity<>(userId, HttpStatus.OK);
     }
 }
