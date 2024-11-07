@@ -13,5 +13,5 @@ import java.util.List;
 public class PostMessageDto {
     private String textValue;
     @Getter
-    private List<AttachmentDto> attachments;
+    private List<PostAttachmentDto> attachments;
 }

@@ -4,7 +4,7 @@ import com.sdp.sdpmessenger.models.Attachment;
 import com.sdp.sdpmessenger.models.Message;
 import com.sdp.sdpmessenger.models.MessageStatus;
 import com.sdp.sdpmessenger.models.User;
-import com.sdp.sdpmessenger.models.dtos.AttachmentDto;
+import com.sdp.sdpmessenger.models.dtos.PostAttachmentDto;
 import com.sdp.sdpmessenger.models.dtos.PostMessageDto;
 import com.sdp.sdpmessenger.repositories.MessageRepository;
 import com.sdp.sdpmessenger.services.AttachmentService;
@@ -66,12 +66,12 @@ public class MessageServiceImpl implements MessageService {
 
         List<Attachment> attachments = new ArrayList<>();
         if (message.getAttachments() != null) {
-            for (AttachmentDto attachmentDto : message.getAttachments()) {
+            for (PostAttachmentDto postAttachmentDto : message.getAttachments()) {
                 Attachment attachment = new Attachment();
                 attachment.setMessage(createdMessage);
-                attachment.setType(attachmentDto.getType());
-                attachment.setUrlToResource(attachmentDto.getUrlToResource());
-                attachment.setSizeInBytes(attachmentDto.getSizeInBytes());
+                attachment.setType(postAttachmentDto.getType());
+                attachment.setUrlToResource(postAttachmentDto.getUrlToResource());
+                attachment.setSizeInBytes(postAttachmentDto.getSizeInBytes());
                 attachment.setCreatedAt(new Date());
                 attachments.add(attachment);
             }

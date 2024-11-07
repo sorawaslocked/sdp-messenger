@@ -1,7 +1,6 @@
 package com.sdp.sdpmessenger.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +24,8 @@ public class Attachment {
     private Message message;
 
     @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private AttachmentType type;
 
     @Column(name = "url_to_resource")
     private String urlToResource;
