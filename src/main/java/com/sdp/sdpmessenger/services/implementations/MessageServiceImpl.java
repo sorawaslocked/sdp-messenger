@@ -1,14 +1,18 @@
 package com.sdp.sdpmessenger.services.implementations;
 
+import com.sdp.sdpmessenger.models.Attachment;
 import com.sdp.sdpmessenger.models.Message;
 import com.sdp.sdpmessenger.models.MessageStatus;
 import com.sdp.sdpmessenger.models.User;
+import com.sdp.sdpmessenger.models.dtos.AttachmentDto;
 import com.sdp.sdpmessenger.models.dtos.PostMessageDto;
 import com.sdp.sdpmessenger.repositories.MessageRepository;
+import com.sdp.sdpmessenger.services.AttachmentService;
 import com.sdp.sdpmessenger.services.MessageService;
 import com.sdp.sdpmessenger.services.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +21,12 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepo;
     private final UserService userService;
+    private final AttachmentService attachmentService;
 
-    public MessageServiceImpl(MessageRepository messageRepo, UserService userService) {
+    public MessageServiceImpl(MessageRepository messageRepo, UserService userService, AttachmentService attachmentService) {
         this.messageRepo = messageRepo;
         this.userService = userService;
+        this.attachmentService = attachmentService;
     }
 
     @Override
@@ -56,7 +62,26 @@ public class MessageServiceImpl implements MessageService {
         createdMessage.setCreatedAt(new Date());
         createdMessage.setUpdatedAt(new Date());
 
-        return messageRepo.save(createdMessage);
+        createdMessage = messageRepo.save(createdMessage);
+
+        List<Attachment> attachments = new ArrayList<>();
+        if (message.getAttachments() != null) {
+            for (AttachmentDto attachmentDto : message.getAttachments()) {
+                Attachment attachment = new Attachment();
+                attachment.setMessage(createdMessage);
+                attachment.setType(attachmentDto.getType());
+                attachment.setUrlToResource(attachmentDto.getUrlToResource());
+                attachment.setSizeInBytes(attachmentDto.getSizeInBytes());
+                attachment.setCreatedAt(new Date());
+                attachments.add(attachment);
+            }
+        }
+
+        attachmentService.saveAll(attachments);
+
+        createdMessage.setAttachments(attachments);
+
+        return createdMessage;
     }
 
     @Override
