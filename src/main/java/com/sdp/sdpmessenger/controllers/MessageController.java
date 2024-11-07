@@ -50,6 +50,34 @@ public class MessageController {
         return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{messageId}")
+    public ResponseEntity<Message> deleteMessage(@PathVariable int messageId,
+                                                 HttpServletRequest request) {
+        var validationResult = validateTokenAndGetUserId(request);
+
+        if (!validationResult.hasBody()) {
+            return new ResponseEntity<>(validationResult.getStatusCode());
+        }
+
+        int senderId = validationResult.getBody();
+
+        Message message = messageService.getById(messageId);
+
+        if (message == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (message.getSender().getId() != senderId) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        if (!messageService.deleteById(messageId)) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
+    }
+
     private ResponseEntity<Integer> validateTokenAndGetUserId(HttpServletRequest request) {
         HttpStatus status = authValidator.validate(request.getHeader("Authorization"));
         if (status != HttpStatus.OK) {
