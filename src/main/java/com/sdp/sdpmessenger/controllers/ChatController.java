@@ -90,27 +90,6 @@ public class ChatController {
         return new ResponseEntity<>(chat, HttpStatus.OK);
     }
 
-    @PostMapping("/{receiverId}")
-    public ResponseEntity<Message> postMessage(@PathVariable int receiverId,
-                                             @RequestBody PostMessageDto message,
-                                             HttpServletRequest request) {
-        var validationResult = validateTokenAndGetUserId(request);
-
-        if (!validationResult.hasBody()) {
-            return new ResponseEntity<>(validationResult.getStatusCode());
-        }
-
-        int senderId = validationResult.getBody();
-
-        Message createdMessage = messageService.create(message, senderId, receiverId);
-
-        if (createdMessage == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
-    }
-
     private ResponseEntity<Integer> validateTokenAndGetUserId(HttpServletRequest request) {
         HttpStatus status = authValidator.validate(request.getHeader("Authorization"));
         if (status != HttpStatus.OK) {
