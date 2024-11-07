@@ -17,6 +17,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
     private final JwtProvider jwtProvider;
     private final LoginValidator loginValidator;

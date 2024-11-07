@@ -5,7 +5,6 @@ import com.sdp.sdpmessenger.models.Chat;
 import com.sdp.sdpmessenger.models.ChatSimple;
 import com.sdp.sdpmessenger.models.Message;
 import com.sdp.sdpmessenger.models.User;
-import com.sdp.sdpmessenger.models.dtos.PostMessageDto;
 import com.sdp.sdpmessenger.security.JwtProvider;
 import com.sdp.sdpmessenger.services.MessageService;
 import com.sdp.sdpmessenger.services.UserService;
@@ -18,6 +17,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/chats")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ChatController {
     private final MessageService messageService;
     private final UserService userService;
