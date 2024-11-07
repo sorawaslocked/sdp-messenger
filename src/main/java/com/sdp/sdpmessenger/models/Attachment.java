@@ -1,5 +1,6 @@
 package com.sdp.sdpmessenger.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ public class Attachment {
 
     @ManyToOne
     @JoinColumn(name = "message_id", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private Message message;
 
     @Column(name = "type")
