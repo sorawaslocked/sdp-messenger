@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:3000")
 public class MessageController {
     private final MessageService messageService;
-    private final UserService userService;
     private final AuthValidator authValidator;
     private final JwtProvider jwtProvider;
 
@@ -25,7 +24,6 @@ public class MessageController {
                              AuthValidator authValidator,
                              JwtProvider jwtProvider) {
         this.messageService = messageService;
-        this.userService = userService;
         this.authValidator = authValidator;
         this.jwtProvider = jwtProvider;
     }
